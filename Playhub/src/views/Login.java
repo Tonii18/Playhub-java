@@ -11,15 +11,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import roundedComponents.RoundButton;
 import roundedComponents.RoundPanel;
 import roundedComponents.RoundTextField;
-import java.awt.Insets;
-import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
@@ -138,21 +138,64 @@ public class Login extends JFrame {
 		loginpanel.add(signup);
 		
 		username = new RoundTextField(10, 10, 10);
-		username.setForeground(new Color(0, 0, 0));
+		username.setForeground(Color.GRAY);
 		username.setHorizontalAlignment(SwingConstants.CENTER);
 		username.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
 		username.setBackground(new Color(237, 244, 242));
 		username.setBorder(null);
+		username.setText("Usuario");
 		username.setBounds(10, 96, 365, 40);
 		loginpanel.add(username);
 		username.setColumns(10);
 		
+		username.addFocusListener(new java.awt.event.FocusAdapter() {
+		    @Override
+		    public void focusGained(java.awt.event.FocusEvent e) {
+		        if (username.getText().equals("Usuario")) {
+		            username.setText("");
+		            username.setForeground(Color.BLACK);
+		        }
+		    }
+
+		    @Override
+		    public void focusLost(java.awt.event.FocusEvent e) {
+		        if (username.getText().isEmpty()) {
+		            username.setText("Usuario");
+		            username.setForeground(Color.GRAY);
+		        }
+		    }
+		});
+		
 		passwordField = new JPasswordField();
+		passwordField.setText("Contraseña");
+		passwordField.setForeground(Color.GRAY);
 		passwordField.setHorizontalAlignment(SwingConstants.CENTER);
 		passwordField.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
 		passwordField.setBackground(new Color(237, 244, 242));
 		passwordField.setBorder(null);
 		passwordField.setBounds(10, 147, 365, 40);
+		passwordField.setEchoChar((char) 0); // mostrar el texto en claro
+		
+		passwordField.addFocusListener(new java.awt.event.FocusAdapter() {
+		    @Override
+		    public void focusGained(java.awt.event.FocusEvent e) {
+		        if (String.valueOf(passwordField.getPassword()).equals("Contraseña")) {
+		            passwordField.setText("");
+		            passwordField.setForeground(Color.BLACK);
+		            passwordField.setEchoChar('•'); // volver a ocultar caracteres
+		        }
+		    }
+
+		    @Override
+		    public void focusLost(java.awt.event.FocusEvent e) {
+		        if (String.valueOf(passwordField.getPassword()).isEmpty()) {
+		            passwordField.setText("Contraseña");
+		            passwordField.setForeground(Color.GRAY);
+		            passwordField.setEchoChar((char) 0); // mostrar texto claro de nuevo
+		        }
+		    }
+		});
+		
 		loginpanel.add(passwordField);
 		
 		JLabel subtitle = new JLabel("Inicia sesion en tu cuenta");
@@ -171,5 +214,10 @@ public class Login extends JFrame {
 		lblbck.setBounds(0, 0, 1514, 771);
 		lblbck.setIcon(new ImageIcon(getClass().getResource("/back.png")));
 		contentPane.add(lblbck);
+		
+		SwingUtilities.invokeLater(() -> {
+		    loginpanel.requestFocusInWindow();
+		});
+
 	}
 }
