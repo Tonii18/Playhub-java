@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -211,13 +214,36 @@ public class Login extends JFrame {
 		contentPane.add(logo);
 		
 		JLabel lblbck = new JLabel("");
-		lblbck.setBounds(0, 0, 1514, 771);
+		lblbck.setBounds(0, 0, 1530, 810);
 		lblbck.setIcon(new ImageIcon(getClass().getResource("/back.png")));
 		contentPane.add(lblbck);
 		
 		SwingUtilities.invokeLater(() -> {
 		    loginpanel.requestFocusInWindow();
 		});
+		
+		// Events for the buttons
+		
+		signup.addActionListener(new buttons());
 
 	}
+	
+	/*
+	 * Private class for handling the buttons events
+	 */
+	
+	private class buttons implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton button = (JButton) e.getSource();
+			
+			if(button == signup) {
+				Signup s = new Signup();
+				s.setVisible(true);
+				dispose();
+			}
+		}
+		
+	}
+	
 }
