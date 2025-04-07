@@ -2,7 +2,6 @@ package views;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -14,12 +13,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import controllers.DBManagerClient;
+import models.User;
 import roundedComponents.RoundButton;
 import roundedComponents.RoundTextField;
 
@@ -30,25 +33,9 @@ public class Signup extends JFrame {
 	private JButton signup;
 	private JTextField emailtf;
 	private RoundTextField usertf;
-	private RoundTextField passtf;
+	private JPasswordField passtf;
 	private RoundTextField phonetf;
 	private JButton home;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Signup frame = new Signup();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -135,7 +122,7 @@ public class Signup extends JFrame {
 		    }
 		});
 		
-		passtf = new RoundTextField(10, 10, 10);
+		passtf = new JPasswordField(10);
 		passtf.setText("Contraseña");
 		passtf.setHorizontalAlignment(SwingConstants.CENTER);
 		passtf.setForeground(Color.GRAY);
@@ -144,22 +131,25 @@ public class Signup extends JFrame {
 		passtf.setBorder(null);
 		passtf.setBackground(new Color(237, 244, 242));
 		passtf.setBounds(563, 432, 388, 40);
+		passtf.setEchoChar((char) 0); // mostrar el texto en claro
 		contentPane.add(passtf);
 		
 		passtf.addFocusListener(new java.awt.event.FocusAdapter() {
 		    @Override
 		    public void focusGained(java.awt.event.FocusEvent e) {
-		        if (passtf.getText().equals("Contraseña")) {
+		        if (String.valueOf(passtf.getPassword()).equals("Contraseña")) {
 		        	passtf.setText("");
 		        	passtf.setForeground(Color.BLACK);
+		        	passtf.setEchoChar('•'); // volver a ocultar caracteres
 		        }
 		    }
 
 		    @Override
 		    public void focusLost(java.awt.event.FocusEvent e) {
-		        if (passtf.getText().isEmpty()) {
+		        if (String.valueOf(passtf.getPassword()).isEmpty()) {
 		        	passtf.setText("Contraseña");
 		        	passtf.setForeground(Color.GRAY);
+		        	passtf.setEchoChar((char) 0); // mostrar texto claro de nuevo
 		        }
 		    }
 		});
@@ -262,6 +252,7 @@ public class Signup extends JFrame {
 		// Events for the buttons
 		
 		home.addActionListener(new buttons());
+		signup.addActionListener(new buttons());
 	}
 	
 	/*
@@ -277,9 +268,54 @@ public class Signup extends JFrame {
 				Login l = new Login();
 				l.setVisible(true);
 				dispose();
+			}else if(button == signup) {
+				register();
 			}
 		}
 		
+	}
+	
+	/*
+	 * External methods
+	 */
+	
+	public void register() {
+		String email = emailtf.getText();
+		String name = usertf.getText();
+		String pass = passtf.getText();
+		String phone = phonetf.getText();
+		
+		User u = new User(email, name, pass, phone);
+		
+		if(DBManagerClient.registerUser(u)) {
+			JOptionPane.showMessageDialog(null, "¡Te has registrado correctamente!");
+			HomeUser h = new HomeUser(u);
+			h.setVisible(true);
+			dispose();
+		}else {
+			JOptionPane.showMessageDialog(null, "¡Ya existe un usuario con estas credenciales!");
+			blankFields();
+		}
+	}
+	
+	public void blankFields() {
+		emailtf.setText("Correo");
+		emailtf.setForeground(Color.gray);
+		usertf.setText("Usuario");
+		usertf.setForeground(Color.gray);
+		passtf.setText("Contraseña");
+		passtf.setForeground(Color.gray);
+		passtf.setEchoChar((char) 0); // mostrar el texto en claro
+		phonetf.setText("Telefono");
+		phonetf.setForeground(Color.gray);
+	}
+	
+	public boolean areEmpty() {
+		if(emailtf.getText().isEmpty() || usertf.getText().isEmpty() || passtf.getText().isEmpty() || phonetf.getText().isEmpty()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 }

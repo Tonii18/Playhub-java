@@ -2,7 +2,6 @@ package views;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -15,8 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import models.User;
 import roundedComponents.RoundPanel;
 
 public class HomeUser extends JFrame {
@@ -28,27 +29,15 @@ public class HomeUser extends JFrame {
 	private JButton padelButton;
 	private JButton othersButton;
 	private JButton menu;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HomeUser frame = new HomeUser();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+	private User u;
 
 	/**
 	 * Create the frame.
 	 */
-	public HomeUser() {
+	public HomeUser(User u) {
+		this.u = u;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1530, 810);
 		contentPane = new JPanel();
@@ -233,6 +222,10 @@ public class HomeUser extends JFrame {
 		// Events
 		
 		footballButton.addActionListener(new buttons());
+		basketButton.addActionListener(new buttons());
+		padelButton.addActionListener(new buttons());
+		othersButton.addActionListener(new buttons());
+		menu.addActionListener(new buttons());
 	}
 	
 	/*
@@ -244,10 +237,20 @@ public class HomeUser extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			JButton button = (JButton) e.getSource();
 			
-			if(button == footballButton) {
-				JOptionPane.showMessageDialog(null, "Has pulsado "+footballButton.getName());
+			if(button == menu) {
+				SideMenu s = new SideMenu(HomeUser.this, u);
+				s.setVisible(true);
 			}
 		}
 		
 	}
+	
+	/*
+	 * External methods
+	 */
+	
+
+
+
+
 }

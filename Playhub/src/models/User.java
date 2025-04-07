@@ -21,6 +21,12 @@ public class User {
 		this.balance = 0.00D;
 	}
 
+	public User(String name, String pass) {
+		super();
+		this.name = name;
+		this.pass = pass;
+	}
+
 	public String getMail() {
 		return mail;
 	}

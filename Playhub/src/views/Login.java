@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -20,6 +21,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import controllers.DBManagerClient;
+import models.User;
 import roundedComponents.RoundButton;
 import roundedComponents.RoundPanel;
 import roundedComponents.RoundTextField;
@@ -225,7 +228,7 @@ public class Login extends JFrame {
 		// Events for the buttons
 		
 		signup.addActionListener(new buttons());
-
+		login.addActionListener(new buttons());
 	}
 	
 	/*
@@ -241,9 +244,46 @@ public class Login extends JFrame {
 				Signup s = new Signup();
 				s.setVisible(true);
 				dispose();
+			}else if(button == login) {
+				login();
 			}
 		}
 		
+	}
+	
+	/*
+	 * External methods
+	 */
+	
+	public void login() {
+		String name = username.getText();
+		String pass = new String(passwordField.getPassword());
+		
+		User u = new User(name, pass);
+		
+		if(DBManagerClient.loginUser(u)) {
+			String email = DBManagerClient.getEmail(name);
+			String phone = DBManagerClient.getPhoneNumber(name);
+			
+			JOptionPane.showMessageDialog(null, "¡Has iniciado sesion correctamente!");
+			
+			User fullUser = new User(email, name, pass, phone);
+			
+			HomeUser h = new HomeUser(fullUser);
+			h.setVisible(true);
+			dispose();
+		}else {
+			JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
+			blankFields();
+		}
+	}
+	
+	public void blankFields() {
+		username.setText("Usuario");
+		username.setForeground(Color.gray);
+		passwordField.setText("Contraseña");
+		passwordField.setForeground(Color.gray);
+		passwordField.setEchoChar((char) 0); // mostrar el texto en claro
 	}
 	
 }

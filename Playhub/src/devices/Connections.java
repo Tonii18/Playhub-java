@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Connections {
 	
-	private static String url = "jdbc:mysql://127.0.0.1:3306/playhub?serverTimezone=Europe/Madrid&useSSL=false";
+	private static String url = "jdbc:mysql://127.0.0.1:3306/PlayHub?serverTimezone=Europe/Madrid&useSSL=false";
 	private static String controllerName = "com.mysql.cj.jdbc.Driver";
 	private static String username = "root";
 	private static String password = "root";
