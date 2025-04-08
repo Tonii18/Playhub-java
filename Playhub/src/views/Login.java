@@ -26,6 +26,7 @@ import models.User;
 import roundedComponents.RoundButton;
 import roundedComponents.RoundPanel;
 import roundedComponents.RoundTextField;
+import viewsOwner.OwnerLogin;
 
 public class Login extends JFrame {
 
@@ -229,6 +230,7 @@ public class Login extends JFrame {
 		
 		signup.addActionListener(new buttons());
 		login.addActionListener(new buttons());
+		business.addActionListener(new buttons());
 	}
 	
 	/*
@@ -246,6 +248,10 @@ public class Login extends JFrame {
 				dispose();
 			}else if(button == login) {
 				login();
+			}else if(button == business) {
+				OwnerLogin ol = new OwnerLogin();
+				ol.setVisible(true);
+				dispose();
 			}
 		}
 		
@@ -283,7 +289,7 @@ public class Login extends JFrame {
 		username.setForeground(Color.gray);
 		passwordField.setText("Contraseña");
 		passwordField.setForeground(Color.gray);
-		passwordField.setEchoChar((char) 0); // mostrar el texto en claro
+		passwordField.setEchoChar((char) 0);
 	}
 	
 }
