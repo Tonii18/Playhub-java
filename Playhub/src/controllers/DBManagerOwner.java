@@ -1,13 +1,15 @@
 package controllers;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import devices.Connections;
 import models.Owner;
-import models.User;
 
 public class DBManagerOwner {
 	
@@ -180,6 +182,43 @@ public class DBManagerOwner {
 	   public List<Business> obtenerNegociosPorPropietario(int propietarioId)
 	 */
 	
+	public static List<String> getSports() {
+		List<String> sports = new ArrayList<>();
+		
+		String sql = "SELECT nombre FROM deporte";
+		
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				sports.add(rs.getString("nombre"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return sports;
+	}
+	
+	public static void setSports(String sport) {
+		String sql = "INSERT INTO deporte (nombre) VALUES (?)";
+		
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setString(1, sport);
+		
+			ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	
+
 	
 
 }

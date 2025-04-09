@@ -58,7 +58,7 @@ public class OwnerProfilePage extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel navbar = new JPanel();
-		navbar.setBounds(-8, 0, 1530, 90);
+		navbar.setBounds(-7, 0, 1530, 90);
 		contentPane.add(navbar);
 		navbar.setLayout(null);
 		

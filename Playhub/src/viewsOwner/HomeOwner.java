@@ -191,6 +191,10 @@ public class HomeOwner extends JFrame {
 				OwnerProfilePage opp = new OwnerProfilePage(o);
 				opp.setVisible(true);
 				dispose();
+			}else if(button == bussiness) {
+				BusinessView bv = new BusinessView(o);
+				bv.setVisible(true);
+				dispose();
 			}
 		}
 		
