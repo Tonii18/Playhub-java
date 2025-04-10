@@ -3,10 +3,10 @@ package viewsOwner;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -24,7 +24,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import controllers.DBManagerOwner;
+import models.Business;
 import models.Owner;
+import roundedComponents.RoundButton;
+import roundedComponents.RoundButtonImage;
 
 public class AddBusiness extends JFrame {
 
@@ -39,7 +42,7 @@ public class AddBusiness extends JFrame {
 	private JButton back;
 	private JButton create;
 	
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	
 	private JTextArea textArea;
 	
@@ -47,6 +50,12 @@ public class AddBusiness extends JFrame {
 	
 	private Owner o;
 	private JButton addCustome;
+	private JLabel sportLabel;
+	private JLabel priceLabel;
+	private JLabel courtsLabel;
+	private JLabel locationLabel;
+	private JLabel descriptionLabel;
+	private JLabel imageLabel;
 
 	/**
 	 * Create the frame.
@@ -96,6 +105,8 @@ public class AddBusiness extends JFrame {
 		navbar.add(background);
 		
 		JPanel body = new JPanel();
+		body.setBorder(null);
+		body.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		body.setBounds(-7, 89, 1530, 695);
 		contentPane.add(body);
 		body.setLayout(null);
@@ -107,7 +118,8 @@ public class AddBusiness extends JFrame {
 		body.add(nametf);
 		nametf.setColumns(10);
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
 		comboBox.setBounds(97, 242, 380, 50);
 		
 		comboBox.addItem("Selecciona un deporte");
@@ -125,8 +137,12 @@ public class AddBusiness extends JFrame {
 		pricetf.setBounds(97, 388, 380, 50);
 		body.add(pricetf);
 		
-		create = new JButton("Crear Negocio");
-		create.setBounds(97, 534, 380, 50);
+		create = new RoundButton("Crear Negocio", 20, 20);
+		create.setBorder(null);
+		create.setForeground(new Color(255, 255, 255));
+		create.setFont(new Font("Inter 28pt ExtraBold", Font.PLAIN, 20));
+		create.setBackground(new Color(59, 167, 176));
+		create.setBounds(97, 512, 380, 72);
 		body.add(create);
 		
 		numberstf = new JTextField(10);
@@ -148,8 +164,12 @@ public class AddBusiness extends JFrame {
 		textArea.setBounds(574, 388, 380, 196);
 		body.add(textArea);
 		
-		JButton addImage = new JButton("");
+		JButton addImage = new RoundButtonImage("", 15, 15);
+		addImage.setBackground(new Color(255, 255, 255));
+		addImage.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		addImage.setFont(new Font("Inter 24pt Medium", Font.PLAIN, 20));
 		addImage.setBounds(1051, 96, 380, 196);
+		addImage.setIcon(new ImageIcon(getClass().getResource("/input-image.png")));
 		body.add(addImage);
 		
 		addImage.addActionListener(e -> {
@@ -157,6 +177,7 @@ public class AddBusiness extends JFrame {
 		    int option = fileChooser.showOpenDialog(null);
 		    if (option == JFileChooser.APPROVE_OPTION) {
 		        selectedImageFile = fileChooser.getSelectedFile();
+		        addImage.setIcon(null);
 		        addImage.setText("Imagen seleccionada");
 		    }
 		});
@@ -170,9 +191,58 @@ public class AddBusiness extends JFrame {
 		back.setIcon(new ImageIcon(getClass().getResource("/arrow_back (2).png")));
 		body.add(back);
 		
-		addCustome = new JButton("Añadir deporte ");
-		addCustome.setBounds(97, 302, 380, 21);
+		addCustome = new RoundButton("Añadir deporte", 10, 10);
+		addCustome.setBackground(new Color(54, 184, 140));
+		addCustome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		addCustome.setBorder(null);
+		addCustome.setForeground(new Color(255, 255, 255));
+		addCustome.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		addCustome.setBounds(97, 302, 380, 34);
 		body.add(addCustome);
+		
+		JLabel nameLabel = new JLabel("Nombre del negocio");
+		nameLabel.setForeground(new Color(59, 167, 176));
+		nameLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		nameLabel.setBounds(97, 56, 215, 21);
+		body.add(nameLabel);
+		
+		sportLabel = new JLabel("Deporte de tu negocio");
+		sportLabel.setForeground(new Color(59, 167, 176));
+		sportLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		sportLabel.setBounds(97, 211, 215, 21);
+		body.add(sportLabel);
+		
+		priceLabel = new JLabel("Precio por hora");
+		priceLabel.setForeground(new Color(59, 167, 176));
+		priceLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		priceLabel.setBounds(97, 357, 215, 21);
+		body.add(priceLabel);
+		
+		courtsLabel = new JLabel("Número de pistas");
+		courtsLabel.setForeground(new Color(59, 167, 176));
+		courtsLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		courtsLabel.setBounds(574, 65, 215, 21);
+		body.add(courtsLabel);
+		
+		locationLabel = new JLabel("Ubicacion");
+		locationLabel.setForeground(new Color(59, 167, 176));
+		locationLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		locationLabel.setBounds(574, 211, 215, 21);
+		body.add(locationLabel);
+		
+		descriptionLabel = new JLabel("Descripcion");
+		descriptionLabel.setForeground(new Color(59, 167, 176));
+		descriptionLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		descriptionLabel.setBounds(574, 357, 215, 21);
+		body.add(descriptionLabel);
+		
+		imageLabel = new JLabel("Selecciona una imagen");
+		imageLabel.setForeground(new Color(59, 167, 176));
+		imageLabel.setFont(new Font("Inter 28pt Medium", Font.PLAIN, 15));
+		imageLabel.setBounds(1051, 65, 215, 21);
+		body.add(imageLabel);
+		ImageIcon icon = new ImageIcon(getClass().getResource("/form-image.png"));
+		Image resized = icon.getImage().getScaledInstance(517, 316, Image.SCALE_SMOOTH);
 		
 		addCustome.addActionListener(new ActionListener() {
 			@Override
@@ -228,7 +298,23 @@ public class AddBusiness extends JFrame {
 			return;
 		}
 		
+		int ownerId = DBManagerOwner.getId(o.getName());
+		double price = Double.parseDouble(priceStr);
+		int sportId = DBManagerOwner.getSportId(sportName);
+		int avaliablesCourts = Integer.parseInt(courtsStr);
 		
+		Business b = new Business(name, description, location, price, avaliablesCourts, sportId, ownerId);
+		
+		int newBusinessId = DBManagerOwner.insertBusiness(b, selectedImageFile);
+
+		if (newBusinessId != -1) {
+			JOptionPane.showMessageDialog(this, "Negocio creado correctamente.");
+			BusinessView bv = new BusinessView(o);
+			bv.setVisible(true);
+			dispose();
+		} else {
+			JOptionPane.showMessageDialog(this, "Error al crear el negocio.");
+		}
 		
 	}
 }

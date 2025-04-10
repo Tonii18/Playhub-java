@@ -2,11 +2,14 @@ package viewsOwner;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import controllers.DBManagerOwner;
+import models.Business;
 import models.Owner;
 import roundedComponents.RoundButtonImage;
 import roundedComponents.RoundPanel;
@@ -27,6 +32,8 @@ public class BusinessView extends JFrame {
 	private JButton back;
 	
 	private Owner o;
+	
+	private JPanel cardsContainer;
 
 	/**
 	 * Create the frame.
@@ -101,8 +108,17 @@ public class BusinessView extends JFrame {
 		addingPanel.add(add);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBorder(null);
 		scrollPane.setBounds(486, 97, 976, 496);
 		body.add(scrollPane);
+		
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+		cardsContainer = new JPanel();
+		cardsContainer.setLayout(new BoxLayout(cardsContainer, BoxLayout.X_AXIS));
+		scrollPane.setViewportView(cardsContainer);
+
 		
 		back = new JButton("");
 		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -111,6 +127,11 @@ public class BusinessView extends JFrame {
 		back.setIcon(new ImageIcon(getClass().getResource("/arrow_back (2).png")));
 		back.setBounds(37, 616, 50, 50);
 		body.add(back);
+		
+		// Method to get the business list
+		
+		loadBusinessCards();
+
 		
 		// Events
 		
@@ -139,4 +160,32 @@ public class BusinessView extends JFrame {
 		}
 		
 	}
+	
+	/*
+	 * External methods
+	 */
+	
+	private void loadBusinessCards() {
+		int ownerId = DBManagerOwner.getId(o.getName());
+	    List<Business> businesses = DBManagerOwner.getBusinessesByOwner(ownerId);
+
+	    for (int i = 0; i < businesses.size(); i++) {
+	        Business b = businesses.get(i);
+	        BusinessCard card = new BusinessCard(b);
+
+	        card.setPreferredSize(new Dimension(356, 380));
+	        card.setMinimumSize(new Dimension(356, 380));
+	        card.setMaximumSize(new Dimension(356, 380));
+
+	        cardsContainer.add(card);
+
+	        if (i < businesses.size() - 1) {
+	            cardsContainer.add(Box.createRigidArea(new Dimension(20, 0)));
+	        }
+	    }
+
+	    cardsContainer.revalidate();
+	    cardsContainer.repaint();
+	}
+
 }

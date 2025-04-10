@@ -10,13 +10,38 @@ public class Business {
     private int avaliablesPitchs;
     private int sportId;
     private int ownerId;
+    private String imagePath;
 
    
-    public Business() {
+    public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public Business() {
     	
     }
+	
+	
 
-    public Business(String name, String description, String location, double pricePerHour, int avaliablesPitchs, int sportId, int ownerId) {
+    public Business(int id, String name, String description, String location, double pricePerHour, int avaliablesPitchs,
+			int sportId, int ownerId, String imagePath) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.location = location;
+		this.pricePerHour = pricePerHour;
+		this.avaliablesPitchs = avaliablesPitchs;
+		this.sportId = sportId;
+		this.ownerId = ownerId;
+		this.imagePath = imagePath;
+	}
+
+	public Business(String name, String description, String location, double pricePerHour, int avaliablesPitchs, int sportId, int ownerId) {
         this.name = name;
         this.description = description;
         this.location = location;

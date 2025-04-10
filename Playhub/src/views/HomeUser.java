@@ -110,6 +110,7 @@ public class HomeUser extends JFrame {
 		Image resizedPng = original.getImage().getScaledInstance(228, 157, Image.SCALE_SMOOTH);
 		
 		footballButton = new JButton("");
+		footballButton.setName("fútbol");
 		footballButton.setContentAreaFilled(false);
 		footballButton.setBorder(null);
 		footballButton.setBounds(10, 11, 259, 376);
@@ -139,6 +140,7 @@ public class HomeUser extends JFrame {
 		Image resizedPng2 = original2.getImage().getScaledInstance(117, 227, Image.SCALE_SMOOTH);
 		
 		basketButton = new JButton("");
+		basketButton.setName("baloncesto");
 		basketButton.setContentAreaFilled(false);
 		basketButton.setBorder(null);
 		basketButton.setBounds(10, 11, 259, 376);
@@ -168,6 +170,7 @@ public class HomeUser extends JFrame {
 		Image resizedPng3 = original3.getImage().getScaledInstance(228, 157, Image.SCALE_SMOOTH);
 		
 		padelButton = new JButton("");
+		padelButton.setName("pádel");
 		padelButton.setContentAreaFilled(false);
 		padelButton.setBorder(null);
 		padelButton.setBounds(10, 11, 259, 376);
@@ -240,6 +243,10 @@ public class HomeUser extends JFrame {
 			if(button == menu) {
 				SideMenu s = new SideMenu(HomeUser.this, u);
 				s.setVisible(true);
+			}else if(button == footballButton || button == basketButton || button == padelButton) {
+				ShowBusiness sb = new ShowBusiness();
+				sb.setVisible(true);
+				dispose();
 			}
 		}
 		
@@ -249,7 +256,7 @@ public class HomeUser extends JFrame {
 	 * External methods
 	 */
 	
-
+	
 
 
 
