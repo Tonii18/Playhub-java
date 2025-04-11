@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.cj.xdevapi.Result;
 
 import devices.Connections;
+import models.Business;
 import models.User;
 
 public class DBManagerClient {
@@ -166,6 +169,95 @@ public class DBManagerClient {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	// Get sport name by its Id
+	 
+	public static String getSportName(int sportId) {
+		String name = "";
+
+		String sql = "SELECT nombre FROM deporte WHERE id = ?";
+
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, sportId);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				name = rs.getString("nombre");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		return name;
+	}
+	
+	// Get sportID by its name
+	
+	public static int getSportId(String sportname) {
+		int id = 0;
+
+		String sql = "SELECT id FROM deporte WHERE nombre = ?";
+
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, sportname);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		return id;
+	}
+	
+	// Get business 
+	
+	public static List<Business> getBusinessesBySport(int sId) {
+	    List<Business> businesses = new ArrayList<>();
+	    
+	    String query = "";
+	    
+	    if(sId == 1) {
+	    	query = "SELECT * FROM negocio WHERE deporte_id = ? OR deporte_id = 9";
+	    }else {
+	    	query = "SELECT * FROM negocio WHERE deporte_id = ?";
+	    }
+
+	    try{
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(query);
+
+	        ps.setInt(1, sId);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            String name = rs.getString("nombre");
+	            String description = rs.getString("descripcion");
+	            String location = rs.getString("ubicacion");
+	            double pricePerHour = rs.getDouble("precio_por_hora");
+	            int avaliablesPitchs = rs.getInt("numero_pistas");
+	            int sportId = rs.getInt("deporte_id");
+	            int propId = rs.getInt("propietario_id");
+
+	            Business b = new Business(name, description, location, pricePerHour, avaliablesPitchs, sportId, propId);
+	            businesses.add(b);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return businesses;
 	}
 
 

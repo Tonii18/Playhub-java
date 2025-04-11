@@ -244,7 +244,7 @@ public class HomeUser extends JFrame {
 				SideMenu s = new SideMenu(HomeUser.this, u);
 				s.setVisible(true);
 			}else if(button == footballButton || button == basketButton || button == padelButton) {
-				ShowBusiness sb = new ShowBusiness();
+				ShowBusiness sb = new ShowBusiness(u, button.getName().toUpperCase());
 				sb.setVisible(true);
 				dispose();
 			}
