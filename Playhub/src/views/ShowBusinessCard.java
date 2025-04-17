@@ -75,6 +75,34 @@ public class ShowBusinessCard extends JPanel {
 		goInto.setBounds(10, 173, 324, 42);
 		panel.add(goInto);
 		
+		JLabel loc = new JLabel("");
+		loc.setBounds(20, 90, 20, 20);
+		loc.setIcon(new ImageIcon(getClass().getResource("/location_on.png")));
+		panel.add(loc);
+		
+		JLabel sport = new JLabel("");
+		sport.setBounds(20, 130, 20, 20);
+		
+		String name = getSportName(b.getSportId());
+		
+		if(name.equalsIgnoreCase("fútbol")) {
+			sport.setIcon(new ImageIcon(getClass().getResource("/football-logo.png")));
+		}else if(name.equalsIgnoreCase("baloncesto")){
+			ImageIcon icon2 = new ImageIcon(getClass().getResource("/basketball-logo.png"));
+			Image resized2 = icon2.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+			sport.setIcon(new ImageIcon(resized2));
+		}else if(name.equalsIgnoreCase("pádel")) {
+			ImageIcon icon3 = new ImageIcon(getClass().getResource("/padel-logo.png"));
+			Image resized3 = icon3.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+			sport.setIcon(new ImageIcon(resized3));
+		}else {
+			ImageIcon icon4 = new ImageIcon(getClass().getResource("/award-logo.png"));
+			Image resized4 = icon4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+			sport.setIcon(new ImageIcon(resized4));
+		}
+		
+		panel.add(sport);
+		
 	}
 	
 	public static String getSportName(int id) {
@@ -87,5 +115,4 @@ public class ShowBusinessCard extends JPanel {
 		
 		return path;
 	}
-
 }

@@ -247,6 +247,10 @@ public class HomeUser extends JFrame {
 				ShowBusiness sb = new ShowBusiness(u, button.getName().toUpperCase());
 				sb.setVisible(true);
 				dispose();
+			}else if(button == othersButton) {
+				SearchBusiness sb = new SearchBusiness(u);
+				sb.setVisible(true);
+				dispose();
 			}
 		}
 		
