@@ -86,7 +86,7 @@ public class ShowBusiness extends JFrame {
 		contentPane.add(body);
 		body.setLayout(null);
 		
-		JLabel Sport = new JLabel(sport);
+		JLabel Sport = new JLabel(sport.toUpperCase());
 		Sport.setForeground(new Color(59, 167, 176));
 		Sport.setHorizontalAlignment(SwingConstants.CENTER);
 		Sport.setFont(new Font("Inter 28pt Black", Font.PLAIN, 40));
