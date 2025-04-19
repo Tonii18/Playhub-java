@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -74,6 +76,14 @@ public class ShowBusinessCard extends JPanel {
 		goInto.setBorder(null);
 		goInto.setBounds(10, 173, 324, 42);
 		panel.add(goInto);
+		
+		goInto.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BookingPage bp = new BookingPage(u, b);
+				bp.setVisible(true);
+			}
+		});
 		
 		JLabel loc = new JLabel("");
 		loc.setBounds(20, 90, 20, 20);
