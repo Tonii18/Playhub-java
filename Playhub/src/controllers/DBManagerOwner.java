@@ -424,5 +424,50 @@ public class DBManagerOwner {
 			e.printStackTrace();
 		}
 	}
+	
+	// Get business by its id
+	
+	public static Business getBusinessById(int id) {
+	    Business business = null;
+
+	    try (Connection conn = Connections.obtener()) {
+	        String query = "SELECT * FROM negocio WHERE id = ?";
+	        PreparedStatement ps = conn.prepareStatement(query);
+	        ps.setInt(1, id);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            String nombre = rs.getString("nombre");
+	            String descripcion = rs.getString("descripcion");
+	            String ubicacion = rs.getString("ubicacion");
+	            double precioPorHora = rs.getDouble("precio_por_hora");
+	            int numeroPistas = rs.getInt("numero_pistas");
+	            int deporteId = rs.getInt("deporte_id");
+	            int propietarioId = rs.getInt("propietario_id");
+
+	            String imagePath = getImagePathByBusinessId(id);
+
+	            business = new Business(
+	                id,
+	                nombre,
+	                descripcion,
+	                ubicacion,
+	                precioPorHora,
+	                numeroPistas,
+	                deporteId,
+	                propietarioId,
+	                imagePath
+	            );
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return business;
+	}
+
+
 
 }

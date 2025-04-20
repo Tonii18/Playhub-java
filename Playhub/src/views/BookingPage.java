@@ -192,9 +192,17 @@ public class BookingPage extends JFrame {
 	}
 	
 	public void booking(double income, int id) {
-		if (court.getSelectedIndex() == 0 || time.getSelectedIndex() == 0 || date.getSelectedIndex() == 0) {
+		String courtSelected = "";
+		
+		if (time.getSelectedIndex() == 0 || date.getSelectedIndex() == 0) {
 		    JOptionPane.showMessageDialog(null, "Por favor, selecciona pista, hora y fecha.");
 		    return;
+		}
+		
+		if(court.getSelectedIndex() == 0) {
+			courtSelected = "Pista no disponible";
+		}else {
+			courtSelected = (String) court.getSelectedItem();
 		}
 
 		double clientBalance = DBManagerClient.getBalance(u.getName());
@@ -205,8 +213,6 @@ public class BookingPage extends JFrame {
 		}else {
 			int userId = DBManagerClient.getUserId(u.getName());
 			int businessId = DBManagerOwner.getBusinessId(b.getName());
-			String courtSelected = (String) court.getSelectedItem();
-			
 			String dateSelected = (String) date.getSelectedItem();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			LocalDate bookingDate = LocalDate.parse(dateSelected, formatter);

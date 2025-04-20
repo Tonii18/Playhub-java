@@ -226,7 +226,8 @@ public class ProfilePage extends JFrame {
 		
 		DBManagerClient.setNewBalance(u.getName(), amount);
 		JOptionPane.showMessageDialog(null, "¡Has ingresado en tu cuenta de PlayHub correctamente "+amount+" Euros!");
-		balance.setText(String.valueOf(DBManagerClient.getBalance(u.getName())));
+		String totalAmount = String.format("%.2f €", DBManagerClient.getBalance(u.getName()));
+		balance.setText(totalAmount);
 	}
 	
 }

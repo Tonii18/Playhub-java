@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -323,6 +324,40 @@ public class DBManagerClient {
 		}
 
 		return id;
+	}
+	
+	// Get all the bookings from an user
+	
+	public static List<Booking> getBookingsByUserId(int userId){
+		List<Booking> list = new ArrayList<>();
+		
+		String sql = "SELECT * FROM reservas WHERE usuario_id = ?";
+		
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, userId);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				int bookingId = rs.getInt("id");
+				int businessId = rs.getInt("negocio_id");
+				String court = rs.getString("pista");
+				LocalDate date = rs.getDate("fecha").toLocalDate();
+				String time = rs.getString("franja_horaria");
+				double price = rs.getDouble("precio");
+
+				Booking b = new Booking(bookingId, userId, businessId, court, date, time, price);
+				list.add(b);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 }
