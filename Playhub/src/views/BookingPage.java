@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,11 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import controllers.DBManagerClient;
 import controllers.DBManagerOwner;
+import models.Booking;
 import models.Business;
 import models.User;
 import roundedComponents.RoundButton;
@@ -30,6 +35,10 @@ public class BookingPage extends JFrame {
 	
 	private User u;
 	private Business b;
+	
+	private JComboBox<String> court;
+	private JComboBox<String> date;
+	private JComboBox<String> time;
 
 	/**
 	 * Create the frame.
@@ -60,15 +69,14 @@ public class BookingPage extends JFrame {
 		 */
 		
 		int numberCourts = b.getAvaliablesPitchs();
-		System.out.println(numberCourts);
-		
+
 		List<String> courtsList = new ArrayList<>();
 		
 		for(int i = 1; i <= numberCourts; i++) {
 			courtsList.add("Pista "+i);
 		}
 		
-		JComboBox<String> court = new JComboBox<String>();
+		court = new JComboBox<String>();
 		court.setFont(new Font("Inter 24pt Medium", Font.PLAIN, 15));
 		court.setBounds(53, 115, 194, 34);
 		court.addItem("Selecciona pista");
@@ -90,7 +98,7 @@ public class BookingPage extends JFrame {
 		    timesTable.add(start + " - " + end);
 		}
 		
-		JComboBox<String> time = new JComboBox<String>();
+		time = new JComboBox<String>();
 		time.setFont(new Font("Inter 24pt Medium", Font.PLAIN, 15));
 		time.setBounds(300, 115, 194, 34);
 		time.addItem("Selecciona horas");
@@ -105,7 +113,7 @@ public class BookingPage extends JFrame {
 		 * Combobox for selecting the date to book
 		 */
 		
-		JComboBox<String> date = new JComboBox<String>();
+		date = new JComboBox<String>();
 		date.setFont(new Font("Inter 24pt Medium", Font.PLAIN, 15));
 		date.setBounds(547, 115, 194, 34);
 		date.addItem("Selecciona la fecha");
@@ -125,7 +133,7 @@ public class BookingPage extends JFrame {
 		contentPane.add(date);
 		
 		/*
-		 * 
+		 * Rest of the Frame
 		 */
 		
 		JLabel image = new JLabel("");
@@ -163,7 +171,18 @@ public class BookingPage extends JFrame {
 		totalPrice.setFont(new Font("Inter 24pt Medium", Font.PLAIN, 16));
 		totalPrice.setBounds(241, 5, 89, 23);
 		price.add(totalPrice);
+		
+		book.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				booking(b.getPricePerHour(), b.getOwnerId());
+			}
+		});
 	}
+	
+	/*
+	 * External Methods
+	 */
 	
 	public String getImage(String businessName) {
 		int id = DBManagerOwner.getBusinessId(businessName);
@@ -171,4 +190,39 @@ public class BookingPage extends JFrame {
 		
 		return path;
 	}
+	
+	public void booking(double income, int id) {
+		if (court.getSelectedIndex() == 0 || time.getSelectedIndex() == 0 || date.getSelectedIndex() == 0) {
+		    JOptionPane.showMessageDialog(null, "Por favor, selecciona pista, hora y fecha.");
+		    return;
+		}
+
+		double clientBalance = DBManagerClient.getBalance(u.getName());
+		
+		if(clientBalance < income) {
+			JOptionPane.showMessageDialog(null, "No se puede finalizar la reserva, saldo insuficiente");
+			dispose();
+		}else {
+			int userId = DBManagerClient.getUserId(u.getName());
+			int businessId = DBManagerOwner.getBusinessId(b.getName());
+			String courtSelected = (String) court.getSelectedItem();
+			
+			String dateSelected = (String) date.getSelectedItem();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate bookingDate = LocalDate.parse(dateSelected, formatter);
+			
+			String timeSelected = (String) time.getSelectedItem();
+			double totalPrice = income;
+			
+			Booking booking = new Booking(userId, businessId, courtSelected, bookingDate, timeSelected, totalPrice);
+			
+			DBManagerClient.insertBooking(booking);
+			
+			DBManagerOwner.updateIncome(income, id);
+			DBManagerClient.reduceBalance(income, u.getName());
+			JOptionPane.showMessageDialog(null, "¡Has realizado la reserva correctamente!");
+			dispose();
+		}
+	}
+	
 }

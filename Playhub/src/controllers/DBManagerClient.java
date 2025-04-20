@@ -7,9 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.xdevapi.Result;
-
 import devices.Connections;
+import models.Booking;
 import models.Business;
 import models.User;
 
@@ -259,6 +258,71 @@ public class DBManagerClient {
 
 	    return businesses;
 	}
+	
+	// Reduce balance from the client
+	
+	public static void reduceBalance(double price, String name) {
+		String sql = "UPDATE usuario SET saldo = saldo - ? WHERE nombre = ?";
+		
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDouble(1, price);
+			ps.setString(2, name);
+			
+			int rows = ps.executeUpdate();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	// Insert new booking 
+	
+	public static void insertBooking(Booking booking) {
+	    String sql = "INSERT INTO reservas (usuario_id, negocio_id, pista, fecha, franja_horaria, precio) VALUES (?, ?, ?, ?, ?, ?)";
+	    
+	    try {
+	        Connection conn = Connections.obtener();
+	        PreparedStatement ps = conn.prepareStatement(sql);
+	        
+	        ps.setInt(1, booking.getUserId());
+	        ps.setInt(2, booking.getBusinessId());
+	        ps.setString(3, booking.getCourt());
+	        ps.setDate(4, java.sql.Date.valueOf(booking.getDate()));
+	        ps.setString(5, booking.getTimeSlot());
+	        ps.setDouble(6, booking.getPrice());
+	        
+	        ps.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
 
+	// Get userId by its name
+	
+	public static int getUserId(String name) {
+		int id = 0;
+
+		String sql = "SELECT id FROM usuario WHERE nombre = ?";
+
+		try {
+			Connection conn = Connections.obtener();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		return id;
+	}
 
 }

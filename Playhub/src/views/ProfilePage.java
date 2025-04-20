@@ -131,7 +131,8 @@ public class ProfilePage extends JFrame {
 		centralPanel.add(phone);
 		
 		balance = new RoundTextField(10, 10, 10);
-		balance.setText(String.valueOf(DBManagerClient.getBalance(u.getName())));
+		String amount = String.format("%.2f €", DBManagerClient.getBalance(u.getName()));
+		balance.setText(amount);
 		balance.setEditable(false);
 		balance.setHorizontalAlignment(SwingConstants.CENTER);
 		balance.setFont(new Font("Inter 24pt Medium", Font.PLAIN, 20));
@@ -180,6 +181,8 @@ public class ProfilePage extends JFrame {
 		
 		add.addActionListener(new buttons());
 		backHome.addActionListener(new buttons());
+		logout.addActionListener(new buttons());
+		bookings.addActionListener(new buttons());
 		
 	}
 	
@@ -198,6 +201,16 @@ public class ProfilePage extends JFrame {
 				HomeUser h = new HomeUser(u);
 				h.setVisible(true);
 				dispose();
+			}else if(button == logout) {
+				int option = JOptionPane.showConfirmDialog(null, "¿Seguro que desea cerrar sesion?");
+				if(option == 0) {
+					Login l = new Login();
+					l.setVisible(true);
+					dispose();
+				}
+			}else if(button == bookings) {
+				BookingListPage blp = new BookingListPage(u);
+				blp.setVisible(true);
 			}
 		}
 		

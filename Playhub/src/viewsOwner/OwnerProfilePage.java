@@ -135,7 +135,8 @@ public class OwnerProfilePage extends JFrame {
 		centralPanel.add(phone);
 		
 		income = new RoundTextField(10, 10, 10);
-		income.setText(String.valueOf(DBManagerOwner.getIncome(o.getName())));
+		String amount = String.format("%.2f €", DBManagerOwner.getIncome(o.getName()));
+		income.setText(amount);
 		income.setEditable(false);
 		income.setHorizontalAlignment(SwingConstants.CENTER);
 		income.setFont(new Font("Inter 24pt Light", Font.PLAIN, 20));
