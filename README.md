@@ -1,14 +1,6 @@
 # 🏀 PlayHub
 
-**PlayHub** es una aplicación de escritorio desarrollada en Java para gestionar la reserva de espacios deportivos. Permite a los usuarios registrarse, visualizar canchas disponibles y realizar reservas de forma ágil e intuitiva.
-
----
-
-## ⚙️ Tecnologías utilizadas
-
-- Java
-- Java Swing + WindowBuilder (interfaz gráfica)
-- MySQL Workbench (gestión de base de datos)
+**PlayHub** es una aplicación de escritorio desarrollada en Java para gestionar la reserva de espacios deportivos. Permite a los usuarios registrarse, visualizar pistas disponibles y realizar reservas de forma ágil e intuitiva.
 
 ---
 
