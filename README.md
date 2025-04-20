@@ -17,7 +17,7 @@
 
 ### 📥 Importar la base de datos
 
-El archivo `playhub.sql` incluido en el proyecto contiene toda la estructura y datos iniciales necesarios para ejecutar la aplicación.
+El archivo `playhubDB.sql` incluido en el proyecto contiene toda la estructura y datos iniciales necesarios para ejecutar la aplicación.
 
 > ⚠️ **No es necesario crear la base de datos manualmente.** El archivo ya contiene la instrucción `CREATE DATABASE playhub;`.
 
@@ -26,7 +26,7 @@ El archivo `playhub.sql` incluido en el proyecto contiene toda la estructura y d
 1. Abre **MySQL Workbench** y conéctate a tu servidor.
 2. Ve al menú `Server > Data Import`.
 3. Selecciona **"Import from Self-Contained File"**.
-4. Elige el archivo `playhub.sql`.
+4. Elige el archivo `playhubDB.sql`.
 5. Asegúrate de que esté marcada la opción **"Include Create Schema"**.
 6. Haz clic en **"Start Import"**.
 
